@@ -64,7 +64,7 @@ for the mapping of collections of basic or embeddable types. Applied to the coll
 The variations of the client and server implementations are too high and there's not much point 
 doing them now, but here are some guidelines anyway.
 
-<h5>Application Class</H5>
+<h5>Application Class</h5>
 A class that extends Application, which is a base class for all JAX-RS applications.
 Has:
 - @ApplicationPath ("/services"): Relative path to access resources. This would be 
@@ -87,8 +87,20 @@ to the resource if put above the method, e.g. http://server:port/war_name/servic
 - 200: OK.
 - 201: Created.
 - 204: No content.
+- 400: Bad Request. (Server will not process request, normally missing data)
 - 401: Unauthorized. (user is not authorized to do this)
-- 403: Forbidden. (server refuses to do this)
+- 403: Forbidden. (server refuses to do this, normally not logged in)
 - 404: Not found.
 
 <h5>Common REST endpoints</h5>
+<i> Note that 5xx status codes are not considered since they are errors with the server that
+could just occur at any time, not necessarily related to the request.</i>
+
+| CRUD Operation                              | HTTP method | Resource (URI Path) | Query params                                            | HTTP Response Codes                                                                                                                                                                                                   | HTTP Request Payload         | HTTP Response Payload                       | Other Response Data (e.g. cookies)                             |
+|---------------------------------------------|-------------|---------------------|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------|---------------------------------------------|----------------------------------------------------------------|
+| Create                                      | POST        |                     |                                                         | Success: 201 Created. Failure: 400 Bad Request.                                                                                                                                                                       | information to create object | Link to new object                          |                                                                |
+| Retrieve                                    | GET         |                     | - Cookie - parameters that can be both optional and not | Success: 200 OK. Failure:  400 Bad Request (if there are non-optional parameters) 401 Unauthorized (if authorization required) 403 Forbidden (if authorization required) 404 Not found (if looking for specific item) |                              | The items we are looking for. May be empty. | - Next and Previous links (if only part of the data retrieved) |
+| Update (Modifying something already there)  | PUT         |                     | - Cookie - parameters that can be both optional and not | Success: 200 OK. or 204 No Content. Failure: 400 Bad Request (if there are non-optional parameters) 401 Unauthorized. 403 Forbidden (if using cookie)                                                                 | Information to modify.       |                                             |                                                                |
+| Update (Logging in, creating something new) | POST        |                     | - Cookie - parameters that can be both optional and not | Success: 200 OK or 204 No Content. Failure: 400 Bad Request (if there are non-optional parameters) 401 Unauthorized. 403 Forbidden (if using cookie)                                                                  | - username and password      |                                             | - cookie                                                       |
+| Delete                                      | DELETE      |                     | - Cookie                                                | Success: 204 No Content. Failure: 401 Unauthorized. 403 Forbidden.                                                                                                                                                    |                              |                                             |                                                                |
+
