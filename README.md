@@ -59,3 +59,36 @@ for the mapping of collections of basic or embeddable types. Applied to the coll
 - @Enumerated: Property is mapped to column with value as the enum's string representation.
 - @Temporal (TemporalType.typeToDefine): Defines precision of date/time property.
 - And many more like @OneToMany, @ManyToMany, etc that are self-explanatory.
+
+## JAX-RS
+The variations of the client and server implementations are too high and there's not much point 
+doing them now, but here are some guidelines anyway.
+
+<h5>Application Class</H5>
+A class that extends Application, which is a base class for all JAX-RS applications.
+Has:
+- @ApplicationPath ("/services"): Relative path to access resources. This would be 
+http://server:port/war_name/services.
+- Set of singletons of all the resource classes. We add to this in the constructor.
+
+<h5>Resource Class</h5>
+A resource class with methods that process service requests. Has:
+- @Path("/resourceName"): Relative to the service class if put above the class, e.g.
+http://server:port/war_name/services/resourceName OR relative
+to the resource if put above the method, e.g. http://server:port/war_name/services/resourceName/method
+- @GET: This method handles HTTP GET requests
+- @Produces (contentType): Determines the type of content the method will produce.
+- @Consumes (contentType): Determines the type of content the method will consume. e.g. MediaType.APPLICATION_JSON
+- @DefaultValue ("value"): If this query parameter isn't supplied, then this is used as the default value.
+- @QueryParam ("param"): This query parameter is supplied with the HTTP request, e.g. ../method?param=someValue
+- Response return that can have different response HTTP status codes. 
+
+<h5>HTTP Status Codes (common)</h5>
+- 200: OK.
+- 201: Created.
+- 204: No content.
+- 401: Unauthorized. (user is not authorized to do this)
+- 403: Forbidden. (server refuses to do this)
+- 404: Not found.
+
+<h5>Common REST endpoints</h5>
