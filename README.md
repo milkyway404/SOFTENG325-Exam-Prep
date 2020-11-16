@@ -47,6 +47,7 @@ Steps:
 printed out by Hibernate.
 
 <h5>Common annotations used:</h5>
+
 - @Entity: This is a table in the relational database. Has a primary key.
 - @Id: Tags unique primary key of an entity.
 - @GeneratedValue: Let the database automatically make and assign this value.
@@ -65,6 +66,7 @@ The variations of the client and server implementations are too high and there's
 doing them now, but here are some guidelines anyway.
 
 <h5>Application Class</h5>
+
 A class that extends Application, which is a base class for all JAX-RS applications.
 Has:
 - @ApplicationPath ("/services"): Relative path to access resources. This would be 
@@ -72,6 +74,7 @@ http://server:port/war_name/services.
 - Set of singletons of all the resource classes. We add to this in the constructor.
 
 <h5>Resource Class</h5>
+
 A resource class with methods that process service requests. Has:
 - @Path("/resourceName"): Relative to the service class if put above the class, e.g.
 http://server:port/war_name/services/resourceName OR relative
@@ -84,6 +87,7 @@ to the resource if put above the method, e.g. http://server:port/war_name/servic
 - Response return that can have different response HTTP status codes. 
 
 <h5>HTTP Status Codes (common)</h5>
+
 - 200: OK.
 - 201: Created.
 - 204: No content.
@@ -93,6 +97,7 @@ to the resource if put above the method, e.g. http://server:port/war_name/servic
 - 404: Not found.
 
 <h5>Common REST endpoints</h5>
+
 <i> Note that 5xx status codes are not considered since they are errors with the server that
 could just occur at any time, not necessarily related to the request.</i>
 
